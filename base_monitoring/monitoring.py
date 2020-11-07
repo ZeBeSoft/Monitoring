@@ -28,7 +28,7 @@ class Monitoring:
         if waiting > self.writerate:
             waiting = waiting - self.writerate
     
-        # logger.info('Waittime: ' + str(waiting))
+        logger.info('Waittime: ' + str(waiting))
         time.sleep(waiting)
         mysql_status_counter = 0
         data_caching = False
