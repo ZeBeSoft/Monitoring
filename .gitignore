@@ -1,5 +1,6 @@
 /venv3p7/
 /.idea/
+*.pyc
 /logfile_*.log
 /config.ini
 /DWD_SIM/own_moduls.csv
