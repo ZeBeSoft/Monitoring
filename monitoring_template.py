@@ -45,22 +45,25 @@ if __name__ == "__main__":
         logger.error('section %s for monitoring module not found in config.ini', parser.name)
         raise RuntimeError('section %s for monitoring module not found in config.ini' % parser.name)
 
-    try:
-        MYSQL_config = {
-            'mysql_host': configuration['MYSQL']['mysql_host'],
-            'mysql_port': configuration.getint('MYSQL', 'mysql_port'),
-            'mysql_username': configuration[parser.name]['mysql_username'],
-            'mysql_pw': configuration[parser.name]['mysql_pw'],
-            'mysql_DB': configuration[parser.name]['mysql_DB'],
-            'mysql_table': configuration[parser.name]['mysql_tablename'],
-            'time_zone': parser_init.time_zone,
-        }
-        if 'mysql_type' in configuration[parser.name].keys():
-            MYSQL_config['StatementType'] = configuration[parser.name]['mysql_type']
-        MYsqlConnection = db_write(MYSQL_config)
-    except Exception as e:
-        logger.exception('on load MYSQL class')
-        raise e
+    if 'mysql_username' in configuration[parser.name].keys():
+        try:
+            MYSQL_config = {
+                'mysql_host': configuration['MYSQL']['mysql_host'],
+                'mysql_port': configuration.getint('MYSQL', 'mysql_port'),
+                'mysql_username': configuration[parser.name]['mysql_username'],
+                'mysql_pw': configuration[parser.name]['mysql_pw'],
+                'mysql_DB': configuration[parser.name]['mysql_DB'],
+                'mysql_table': configuration[parser.name]['mysql_tablename'],
+                'time_zone': parser_init.time_zone,
+            }
+            if 'mysql_type' in configuration[parser.name].keys():
+                MYSQL_config['StatementType'] = configuration[parser.name]['mysql_type']
+            MYsqlConnection = db_write(MYSQL_config)
+        except Exception as e:
+            logger.exception('on load MYSQL class')
+            raise e
+    else:
+        MYsqlConnection = None
 
     if 'Mail' in configuration.sections():
         mail_config = configuration['Mail']
